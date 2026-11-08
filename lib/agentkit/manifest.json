@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "product": "pipmcp",
+  "credential": "PIPMCP_API_KEY",
+  "skills": [
+    {
+      "name": "pipmcp-buildkite",
+      "description": "Connect AI agents to Buildkite using one PipMCP API key and actual hosted tool discovery."
+    }
+  ],
+  "files": {
+    "skills/pipmcp-buildkite/SKILL.md": "197ae6bfc5199f06d4019515d6f6d8203c2dca6c6a6a813b23384614b611bd84"
+  }
+}
