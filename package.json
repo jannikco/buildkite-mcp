@@ -1,0 +1,21 @@
+{
+  "name": "buildkite-mcp",
+  "version": "0.2.0",
+  "description": "Inspect pipeline failures and request an approved build. Read provider data first, then explicitly approve the selected change with operator write opt-in and a unique per-call approval key.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "buildkite-mcp": "server.mjs"
+  },
+  "scripts": {
+    "start": "node example.mjs",
+    "server": "node server.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0"
+  }
+}

@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "id": "buildkite-mcp",
+  "kind": "provider-connector",
+  "artifactType": "connector",
+  "qualityVersion": 2,
+  "title": "Buildkite MCP server",
+  "description": "Inspect pipeline failures and request an approved build. Read provider data first, then explicitly approve the selected change with operator write opt-in and a unique per-call approval key.",
+  "status": "ready",
+  "verification": "mock-only",
+  "releaseEligible": true,
+  "maintainer": "jannikco",
+  "license": "MIT",
+  "product": "pipmcp",
+  "appSlug": "buildkite",
+  "appName": "Buildkite",
+  "operationIds": [
+    "list_builds",
+    "get_build",
+    "create_build"
+  ],
+  "sourceRevision": "1b7a6c2156b4e6bd0d690c0abb2e2622015728d48eb35fa9264dca4d533a69a2",
+  "evidence": [
+    "Actual tools/call and direct-provider request contract tests"
+  ],
+  "provenance": [
+    "https://buildkite.com/docs/apis/rest-api/builds"
+  ],
+  "attributionSlug": "github-buildkite-mcp",
+  "connectorId": "buildkite",
+  "connector": {
+    "id": "buildkite",
+    "appSlug": "buildkite",
+    "name": "Buildkite",
+    "version": "0.2.0",
+    "baseUrl": "https://api.buildkite.com/v2",
+    "auth": {
+      "type": "bearer",
+      "env": "BUILDKITE_TOKEN"
+    },
+    "tools": [
+      {
+        "name": "list_builds",
+        "description": "List builds.",
+        "method": "GET",
+        "path": "/organizations/{organization}/pipelines/{pipeline}/builds",
+        "readOnly": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "organization": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "pipeline": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "page": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000
+            },
+            "per_page": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          "required": [
+            "organization",
+            "pipeline"
+          ],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "path": [
+            "organization",
+            "pipeline"
+          ],
+          "query": {
+            "page": "page",
+            "per_page": "per_page"
+          },
+          "body": {}
+        },
+        "sampleArguments": {
+          "organization": "organization",
+          "pipeline": "pipeline",
+          "per_page": 10
+        },
+        "provenance": [
+          "https://buildkite.com/docs/apis/rest-api/builds"
+        ],
+        "approvalRequired": false,
+        "evidence": {
+          "providerLiveValidation": "not-run",
+          "localValidation": "provider-request-fixture"
+        }
+      },
+      {
+        "name": "get_build",
+        "description": "Get build.",
+        "method": "GET",
+        "path": "/organizations/{organization}/pipelines/{pipeline}/builds/{number}",
+        "readOnly": true,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "organization": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "pipeline": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "number": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 999999999
+            }
+          },
+          "required": [
+            "organization",
+            "pipeline",
+            "number"
+          ],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "path": [
+            "organization",
+            "pipeline",
+            "number"
+          ],
+          "query": {},
+          "body": {}
+        },
+        "sampleArguments": {
+          "organization": "organization",
+          "pipeline": "pipeline",
+          "number": 1
+        },
+        "provenance": [
+          "https://buildkite.com/docs/apis/rest-api/builds"
+        ],
+        "approvalRequired": false,
+        "evidence": {
+          "providerLiveValidation": "not-run",
+          "localValidation": "provider-request-fixture"
+        }
+      },
+      {
+        "name": "create_build",
+        "description": "Create build.",
+        "method": "POST",
+        "path": "/organizations/{organization}/pipelines/{pipeline}/builds",
+        "readOnly": false,
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "organization": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "pipeline": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "commit": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "branch": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            },
+            "message": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048,
+              "description": "Value"
+            }
+          },
+          "required": [
+            "organization",
+            "pipeline",
+            "commit",
+            "branch"
+          ],
+          "additionalProperties": false
+        },
+        "bindings": {
+          "path": [
+            "organization",
+            "pipeline"
+          ],
+          "query": {},
+          "body": {
+            "commit": "commit",
+            "branch": "branch",
+            "message": "message"
+          }
+        },
+        "sampleArguments": {
+          "organization": "organization",
+          "pipeline": "pipeline",
+          "commit": "HEAD",
+          "branch": "main",
+          "message": "Reviewed build"
+        },
+        "provenance": [
+          "https://buildkite.com/docs/apis/rest-api/builds"
+        ],
+        "approvalRequired": true,
+        "evidence": {
+          "providerLiveValidation": "not-run",
+          "localValidation": "provider-request-fixture"
+        }
+      }
+    ],
+    "workflow": {
+      "name": "Inspect pipeline failures and request an approved build",
+      "description": "Inspect pipeline failures and request an approved build. Read provider data first, then explicitly approve the selected change with operator write opt-in and a unique per-call approval key.",
+      "steps": [
+        "list_builds",
+        "get_build",
+        "create_build"
+      ]
+    },
+    "provenance": [
+      "https://buildkite.com/docs/apis/rest-api/builds"
+    ],
+    "verification": "mock-only",
+    "providerLiveValidation": "not-run",
+    "capabilityEvidence": {
+      "local": {
+        "level": "Tested",
+        "operations": [
+          {
+            "name": "list_builds",
+            "level": "Tested",
+            "evidenceRefs": [
+              "Provider request/stdio contract tests"
+            ],
+            "method": "contract-fixture"
+          },
+          {
+            "name": "get_build",
+            "level": "Tested",
+            "evidenceRefs": [
+              "Provider request/stdio contract tests"
+            ],
+            "method": "contract-fixture"
+          },
+          {
+            "name": "create_build",
+            "level": "Tested",
+            "evidenceRefs": [
+              "Provider request/stdio contract tests"
+            ],
+            "method": "contract-fixture"
+          }
+        ],
+        "evidenceRefs": [
+          "Provider request/stdio contract tests"
+        ],
+        "mode": "local"
+      },
+      "managed": {
+        "level": "Documented",
+        "operations": [
+          {
+            "name": "list_builds",
+            "level": "Documented",
+            "evidenceRefs": [],
+            "method": "documentation"
+          },
+          {
+            "name": "get_build",
+            "level": "Documented",
+            "evidenceRefs": [],
+            "method": "documentation"
+          },
+          {
+            "name": "create_build",
+            "level": "Documented",
+            "evidenceRefs": [],
+            "method": "documentation"
+          }
+        ],
+        "evidenceRefs": [],
+        "mode": "managed"
+      }
+    },
+    "repoId": "buildkite-mcp",
+    "product": "pipmcp",
+    "artifactType": "connector",
+    "sourceRevision": "1b7a6c2156b4e6bd0d690c0abb2e2622015728d48eb35fa9264dca4d533a69a2",
+    "managedAvailability": {
+      "status": "import-required",
+      "integration": "openapi-to-mcp",
+      "checkedAt": "2026-11-08T13:20:45.156456+00:00"
+    }
+  },
+  "capabilityEvidence": {
+    "local": {
+      "level": "Tested",
+      "operations": [
+        {
+          "name": "list_builds",
+          "level": "Tested",
+          "evidenceRefs": [
+            "Provider request/stdio contract tests"
+          ],
+          "method": "contract-fixture"
+        },
+        {
+          "name": "get_build",
+          "level": "Tested",
+          "evidenceRefs": [
+            "Provider request/stdio contract tests"
+          ],
+          "method": "contract-fixture"
+        },
+        {
+          "name": "create_build",
+          "level": "Tested",
+          "evidenceRefs": [
+            "Provider request/stdio contract tests"
+          ],
+          "method": "contract-fixture"
+        }
+      ],
+      "evidenceRefs": [
+        "Provider request/stdio contract tests"
+      ],
+      "mode": "local"
+    },
+    "managed": {
+      "level": "Documented",
+      "operations": [
+        {
+          "name": "list_builds",
+          "level": "Documented",
+          "evidenceRefs": [],
+          "method": "documentation"
+        },
+        {
+          "name": "get_build",
+          "level": "Documented",
+          "evidenceRefs": [],
+          "method": "documentation"
+        },
+        {
+          "name": "create_build",
+          "level": "Documented",
+          "evidenceRefs": [],
+          "method": "documentation"
+        }
+      ],
+      "evidenceRefs": [],
+      "mode": "managed"
+    }
+  },
+  "utility": {
+    "problem": "Inspect pipeline failures and request an approved build. Read provider data first, then explicitly approve the selected change with operator write opt-in and a unique per-call approval key.",
+    "output": "Actual provider API results through local MCP tools"
+  },
+  "providerDocs": "https://buildkite.com/docs/apis/rest-api/builds",
+  "factory": "leadadapter-pipmcp",
+  "generatorVersion": 2
+}
